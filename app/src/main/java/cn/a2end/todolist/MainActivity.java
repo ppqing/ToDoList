@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity
     }
     private void showAddDialog(){
         AddEventDialog addEventDialog=new AddEventDialog(MainActivity.this);
+        addEventDialog.setCanceledOnTouchOutside(false);
         addEventDialog.show();
         /*btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
