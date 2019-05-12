@@ -7,10 +7,11 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
+    //表的结构 id 内容 时间 是否已完成
     public static final String CREATE_DB="create table List ("
             +"id integer primary key autoincrement,"
+            +"time text,"
             +"data text,"
-            +"time integer,"
             +"isCompleted integer)";
 
     private Context mContext;

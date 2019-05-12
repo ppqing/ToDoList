@@ -157,4 +157,10 @@ public class MainActivity extends AppCompatActivity
         });*/
         //dialog.show();
     }
+    private void initEventListDB(){
+        /**
+         * 初始化RecyclerView所需要的数据
+         */
+
+    }
 }
