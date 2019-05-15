@@ -2,6 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_fresh"
+        android:orderInCategory="100"
+        android:title="刷新"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_deleteCompleted"
+        android:orderInCategory="100"
+        android:title="删除所有已完成事件"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

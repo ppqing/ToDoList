@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,19 +20,29 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import cn.a2end.todolist.MainActivity;
 import cn.a2end.todolist.R;
 import cn.a2end.todolist.db.Event;
 
 public class AddEventDialog extends Dialog implements View.OnClickListener {
-    public AddEventDialog(@NonNull Context context) {
+    public AddEventDialog(@NonNull Context context, List<Event> eventList,ListAdapter adapter,List<Event> EventListDefault) {
         super(context);
+        mEventList=eventList;
+        mAdapter=adapter;
+        mEventListDefault=EventListDefault;
     }
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
     private int year,month,day,hour,min;
     private EditText t1;
     private EditText t2;
+
+    private List<Event> mEventList;
+    private ListAdapter mAdapter;
+    private List<Event> mEventListDefault;
+
     private String timeString;
     private SimpleDateFormat dateFormat;
     private AlertDialog.Builder alertDialog;
@@ -75,22 +86,28 @@ public class AddEventDialog extends Dialog implements View.OnClickListener {
                 break;
             case R.id.dialog_submit:
                 if(t1.length()==0){
-                    alertDialog.setMessage("请输入内容");
-                    alertDialog.show();
+                    //alertDialog.setMessage("请输入内容");
+                    //alertDialog.show();
+                    Snackbar.make(view,"请设置内容",Snackbar.LENGTH_SHORT).show();
                     break;
                 }
                 if(timeString==null){
-                    alertDialog.setMessage("请设置时间");
-                    alertDialog.show();
+                    //alertDialog.setMessage("请设置时间");
+                    //alertDialog.show();
+                    Snackbar.make(view,"请设置时间",Snackbar.LENGTH_SHORT).show();
                     break;
                 }
-                try {
-                    Event event=new Event(timeString,t1.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Event event=new Event(timeString,t1.getText().toString(),0,0);
                 event.addToDB(getContext());//添加到数据库
+                mEventList.add(event);
+                mAdapter.notifyItemInserted(mEventList.size()-1);
+                if(mEventListDefault!=mEventList){
+                    mEventListDefault.add(event);
+                }
                 this.dismiss();
+                Snackbar.make(view,"添加成功",Snackbar.LENGTH_LONG).show();
+                //alertDialog.setMessage("添加成功");
+                //alertDialog.show();
                 break;
         }
     }
@@ -111,7 +128,11 @@ public class AddEventDialog extends Dialog implements View.OnClickListener {
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                         hour=i;
                         min=i1;
-                        timeString =year+"-"+month+"-"+day+" "+hour+":"+min;
+                        timeString =year+"-"+month+"-"+day+" ";
+                        if(hour<=9)timeString+="0";
+                        timeString+=hour+":";
+                        if(min<=9)timeString+="0";
+                        timeString+=min;
                         try {
                             time= dateFormat.parse(timeString);
                         } catch (ParseException e) {
@@ -127,4 +148,5 @@ public class AddEventDialog extends Dialog implements View.OnClickListener {
         },2019,0,1);
         datePickerDialog.show();
     }
+
 }

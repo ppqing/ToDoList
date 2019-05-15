@@ -12,7 +12,8 @@ public class DBHelper extends SQLiteOpenHelper {
             +"id integer primary key autoincrement,"
             +"time text,"
             +"data text,"
-            +"isCompleted integer)";
+            +"isCompleted integer,"
+            +"isNotification integer)";
 
     private Context mContext;
     public DBHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
